@@ -1,47 +1,22 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react'
 
-const AddProduct = () => {
+const EditProduct2 = () => {
 
     const [title, setTitle] = useState("");
     const [file, setFile] = useState("");
     const [preview, setPreview] = useState("");
-    const navigate = useNavigate();
-
-    const loadImage = (e) => {
-        const image = e.target.files[0];
-        setFile(image);
-        setPreview(URL.createObjectURL(image));
-    }
-
-    const saveProduct = async(e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("title", title);
-        try {
-            await axios.post("http://localhost:5000/products", formData, {
-                headers: {
-                    "Content-type" : "multipart/form-data"
-                } 
-            });
-            navigate("/");
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    
 
     return (
         <div className="columns is-centered mt-5">
             <div className="column is-half">
-                <form onSubmit={saveProduct}>
+                <form onSubmit={updateProduct}>
                     <div className="field">
-                        <label className="label">Product Name</label>
+                        <label className='label'>Product Name</label>
                         <div className="control">
                             <input
                                 type="text"
-                                className="input"
+                                className='input'
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 placeholder="Product Name"
@@ -49,7 +24,7 @@ const AddProduct = () => {
                         </div>
                     </div>
                     <div className="field">
-                        <label className="label">Image</label>
+                        <label className='label'>Image</label>
                         <div className="control">
                             <div className="file">
                                 <label className="file-label">
@@ -59,24 +34,31 @@ const AddProduct = () => {
                                         onChange={loadImage}
                                     />
                                     <span className="file-cta">
-                                        <span className="file-label">Choose a file...</span>
+                                        <span className="file-cta">Choose a file...</span>
                                     </span>
                                 </label>
                             </div>
                         </div>
                     </div>
-                    {/* Kondisi untuk menampilkan preview gambar */}
+                    {/* Tempat untuk menampilkan preview image */}
+
+                    {/* preview : untuk menmpung fungsi yang menampung gambar/image */}
                     {preview ? (
-                        <figure className="image is-128x128">
-                            <img src={preview} alt="Preview Image" />
+                        <figure className='image is-128x128'>
+                            <img 
+                            src={preview} 
+                            alt="Preview Image" 
+                            />
                         </figure>
-                    ) : (
+                    ): (
                         ""
                     )}
 
                     <div className="field">
                         <div className="control">
-                            <button type='submit' className="button is-success">Save</button>
+                            <button type='sumbit' className="button is-success">
+                                Update
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -85,4 +67,4 @@ const AddProduct = () => {
     )
 }
 
-export default AddProduct
+export default EditProduct2
