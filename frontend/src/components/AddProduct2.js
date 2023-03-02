@@ -6,16 +6,16 @@ const AddProduct2 = () => {
 
     const [title, setTitle] = useState("");
     const [file, setFile] = useState("");
-    const [preview, setPreview] = useState(""); 
+    const [preview, setPreview] = useState("");
     const navigate = useNavigate();
 
     const loadImage = (e) => {
-        const image = e.target.file[0];
+        const image = e.target.files[0];
         setFile(image);
         setPreview(URL.createObjectURL(image));
     }
 
-    const saveProduct = async(e) => {
+    const saveProduct = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append("file", file);
@@ -23,7 +23,7 @@ const AddProduct2 = () => {
         try {
             await axios.post("http://localhost:5000/products", formData, {
                 headers: {
-                    "Content-Type" : "multipart/form-data"
+                    "Content-Type": "multipart/form-data"
                 }
             })
             navigate("/")
@@ -39,12 +39,12 @@ const AddProduct2 = () => {
                     <div className="field">
                         <label className="label">Produk Name</label>
                         <div className="control">
-                            <input 
-                            type="text" 
-                            className='input'
-                            value={title}
-                            placeholder="Produce Name"
-                            onChange={(e) => setTitle(e.target.value)}
+                            <input
+                                type="text"
+                                className='input'
+                                value={title}
+                                placeholder="Produce Name"
+                                onChange={(e) => setTitle(e.target.value)}
                             />
                         </div>
                     </div>
@@ -53,14 +53,15 @@ const AddProduct2 = () => {
                         <div className="control">
                             <div className="file">
                                 <label className="file-label">
-                                    <input 
-                                    type="file" 
-                                    className='file-input'
-                                    onChange={loadImage}/>
+                                    <input
+                                        type="file"
+                                        className='file-input'
+                                        onChange={loadImage} />
+                                    <span className="file-cta">
+                                        <span className="file-label">Choose a file...</span>
+                                    </span>
                                 </label>
-                                <span className="file-cta">
-                                    <span className="file-label">Choose a file...</span>
-                                </span>
+
                             </div>
                         </div>
                     </div>
@@ -68,7 +69,7 @@ const AddProduct2 = () => {
 
                     {preview ? (
                         <figure className="image is-128x128">
-                            <img src={preview} alt="Preview Image" />
+                            <img src={preview} alt="Preview" />
                         </figure>
                     ) : (
                         ""

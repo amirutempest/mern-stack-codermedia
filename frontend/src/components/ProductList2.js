@@ -25,6 +25,7 @@ const ProductList2 = () => {
     }
     return (
         <div className='container mt-5'>
+            <Link className='button is-success' to="/add">Add New</Link>
             <div className="columns is-multiline">
                 {/* map untuk produk */}
                 {products.map((product) => (

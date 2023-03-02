@@ -1,11 +1,48 @@
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EditProduct2 = () => {
 
     const [title, setTitle] = useState("");
     const [file, setFile] = useState("");
     const [preview, setPreview] = useState("");
-    
+    const {id} = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        getProductId();
+    }, []);
+
+    const getProductId = async() => {
+        const response = await getProductId(`http://localhost:5000/products/${id}`);
+        setTitle(response.data.name);
+        setFile(response.data.image);
+        setPreview(response.data.url);
+    }
+
+    const updateProduct = async(e) =>{
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("title", title);
+        try {
+            await axios.patch(`http://localhost:5000/products/${id}`, formData, {
+                headers : {
+                    "Content-Type" : "multipart/form-data"
+                }
+            });
+            navigate("/");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const loadImage = (e) => {
+        const image = e.target.files[0];
+        setFile(image);
+        setPreview(URL.createObjectURL(image));
+    }
 
     return (
         <div className="columns is-centered mt-5">
@@ -47,7 +84,7 @@ const EditProduct2 = () => {
                         <figure className='image is-128x128'>
                             <img 
                             src={preview} 
-                            alt="Preview Image" 
+                            alt="Preview" 
                             />
                         </figure>
                     ): (
